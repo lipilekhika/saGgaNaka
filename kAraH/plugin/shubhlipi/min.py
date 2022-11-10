@@ -76,16 +76,15 @@ def prettier_beautify(name: str):
     return cmd(f'prettier "{name}" --write', display=False)
 
 
-import json
-from typing import Dict, Any, Union
-from pydantic import Json
-from datamodel_code_generator.parser.jsonschema import JsonSchemaParser
-from genson import SchemaBuilder
+def get_data_model(input_text, all_optional: bool, snake_case_field: bool) -> str:
+    try:
+        from datamodel_code_generator.parser.jsonschema import JsonSchemaParser
+        from genson import SchemaBuilder
+    except:
+        print("Please install 'datamodel_code_generator'")
+        exit(-1)
+    import json
 
-
-def get_data_model(
-    input_text: Union[Json, Dict[str, Any]], all_optional: bool, snake_case_field: bool
-) -> str:
     builder = SchemaBuilder()
     builder.add_object(input_text)
     schema = builder.to_schema()
