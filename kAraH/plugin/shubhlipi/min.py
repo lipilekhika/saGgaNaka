@@ -1,9 +1,9 @@
 from .kry import get_type
-from typing import Union
+from typing import Union, Dict
 import json
 from requests import post, get
 import subprocess as sub
-from .file import write_bin
+from .file import write_bin, cmd
 
 
 def minify_json(val: Union[dict, str]):
@@ -63,14 +63,46 @@ def download_file(url: str, path=None):
         write_bin(path, r.content)
 
 
+def generate_typescript_data_model(val: Dict, name: str = "RootModel") -> str:
+    JSON = minify_json(val).replace('"', '\\"')
+    data = cmd(
+        f'json2typing interface "{name}" --source "{JSON}" --export',
+        display=False,
+    )[1]
+    return data
+
+
+def prettier_beautify(name: str):
+    return cmd(f'prettier "{name}" --write', display=False)
+
+
+import json
+from typing import Dict, Any, Union
+from pydantic import Json
+from datamodel_code_generator.parser.jsonschema import JsonSchemaParser
+from genson import SchemaBuilder
+
+
+def get_data_model(
+    input_text: Union[Json, Dict[str, Any]], all_optional: bool, snake_case_field: bool
+) -> str:
+    builder = SchemaBuilder()
+    builder.add_object(input_text)
+    schema = builder.to_schema()
+    if all_optional:
+        schema["required"] = []
+
+    parser = JsonSchemaParser(
+        source=json.dumps(schema),
+        base_class="pydantic.BaseModel",
+        snake_case_field=snake_case_field,
+    )
+
+    return parser.parse()
+
+
 def generate_pydantic_data_model(val: dict, basemodel=False) -> str:
-    res = post(
-        "https://kr4ckp.deta.dev/",
-        json={
-            "data": minify_json(val),
-            "options": {"forceOptional": False, "snakeCased": False},
-        },
-    ).json()["model"][36:]
+    res = get_data_model(val, False, False)[36:]
     if not basemodel:
         res = res.replace(
             "from pydantic import BaseModel",
