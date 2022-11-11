@@ -46,9 +46,9 @@ pkg = {
 cmd = {
     "sarve": [
         "pywin32_postinstall.py -instal",  # To setup pywin32
-        "pnpm add -g terser",  # JS minifier installation
-        "pnpm add -g serve",  # Serve static assets locally for testing
-        "pnpm add -g tslib prettier json-to-typing", # type script json iteface generator
+        "npm install -g terser",  # JS minifier installation
+        "npm install -g serve",  # Serve static assets locally for testing
+        "npm install -g tslib prettier json-to-typing", # type script json iteface generator
     ]
 }
 if __name__ == "__main__":
