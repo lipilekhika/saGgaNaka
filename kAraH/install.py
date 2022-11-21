@@ -7,7 +7,7 @@ except:
         r"{0}\python.exe -m pip install --upgrade pip".format(
             os.path.dirname(sys.executable)
         ),
-        "pip install shubhlipi"
+        "pip install shubhlipi",
     ]
     for x in cm:
         os.system(x)
@@ -21,7 +21,7 @@ pkg = {
         "deta",
         "flask",
         "fastapi",
-        "twinw", # upload pip package
+        "twine",  # upload pip package
         "uvicorn[standard]",  # Server ASGI
         "GitPython",
         "python-dotenv",  # .env file parsing
@@ -37,9 +37,9 @@ pkg = {
         "virtualenv",  # Virtual Environment manages
         "bcrypt",  # Encryption Algorithm
         "croytography",  # Encrypting and Decrypting text
-        "python-multipart", # Form Parser in FastAPI
-        "python-jose[cryptography]", # JWT Handler
-        "datamodel_code_generator", # Type Server
+        "python-multipart",  # Form Parser in FastAPI
+        "python-jose[cryptography]",  # JWT Handler
+        "datamodel_code_generator",  # Type Server
     ],
     "exe": ["https://github.com/pyinstaller/pyinstaller/tarball/develop"],
 }
@@ -48,7 +48,7 @@ cmd = {
         "pywin32_postinstall.py -instal",  # To setup pywin32
         "npm install -g terser",  # JS minifier installation
         "npm install -g serve",  # Serve static assets locally for testing
-        "npm install -g tslib prettier json-to-typing", # type script json iteface generator
+        "npm install -g tslib prettier json-to-typing",  # type script json iteface generator
     ]
 }
 if __name__ == "__main__":
