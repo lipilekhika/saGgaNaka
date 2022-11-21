@@ -1,7 +1,7 @@
 ﻿#define MyAppName "Lipi Lekhika"
 #define MyAppVersion "1.17"
 #define MyAppPublisher "Lipi Lekhika"
-#define MyAppURL "https://www.lipilekhika.com"
+#define MyAppURL "https://lipilekhika.pages.dev"
 #define MyAppExeName "lekhika.exe"
 
 [Setup]

@@ -59,26 +59,11 @@ elif sh.args(0) == "setup":
                 )
             else:
                 print(res["detail"])
-            key = getpass("key2 = ")
-            rq = sh.post(link + "/deta_key", json={"key": key})
-            res = rq.json()
-            if rq.status_code == 200:
-                dotenv.set_key(
-                    sh.env("sthAnam") + r"\jAlAnuprayogaH\server\lipi\.env",
-                    "DETA_KEY",
-                    sh.to_base64(res["value"]),
-                )
-            else:
-                print(res["detail"])
             print("WROTE DETA AUTH KEYS")
     exit()
 elif sh.args(0) == "logout":  # delete git keys from windows credential manager
     for o in sh.argv[1:]:
         if o == "deta":
-            dotenv.unset_key(
-                sh.env("sthAnam") + r"\jAlAnuprayogaH\server\lipi\.env",
-                "DETA_KEY"
-            )
             sh.delete_file(sh.home() + r"\.deta\tokens")
             print("DELETED deta tokens")
         elif o == "env":
@@ -111,20 +96,10 @@ if sh.args(0) == "clone":
         # 1
         ("https://github.com/lipilekhika/jAlAnuprayog", "jAlAnuprayogaH"),
         # 2
-        ("https://github.com/ofsfobnelip/app.lipilekhika.git", "jAlasthAnam"),
+        ("https://github.com/lipilekhika/app.lipilekhika", "jAlasthAnam"),
         # 3
         ("https://github.com/lipilekhika/dist", "dist"),
         # 4
-        (
-            "https://github.com/shubhattin/lipilekhikA_saGgaNaka.git",
-            "lok_srota\\saGgaNaka_srotam",
-        ),
-        # 5
-        (
-            "https://github.com/shubhattin/lipilekhikA_jAla.git",
-            "lok_srota\\jAla_srotam",
-        ),
-        # 6
     )
     from git import Repo
 
@@ -141,11 +116,11 @@ elif sh.args(0) == "avahar":
     for x in sh.argv[1:]:
         if x in "123":
             d = (
-                ("https://app.lipilekhika.com/pc", "Lipi Lekhika Installer.zip"),
+                ("https://app-lipilekhika.pages.dev/pc", "Lipi Lekhika Installer.zip"),
                 # 1
-                ("https://app.lipilekhika.com/portable", "Lipi Lekhika Portable.exe"),
+                ("https://app-lipilekhika.pages.dev/portable", "Lipi Lekhika Portable.exe"),
                 # 2
-                ("https://app.lipilekhika.com/android", "Lipi Lekhika.apk"),
+                ("https://app-lipilekhika.pages.dev/android", "Lipi Lekhika.apk"),
                 # 3
             )[int(x) - 1]
             sh.makedir(root + "\\bin")

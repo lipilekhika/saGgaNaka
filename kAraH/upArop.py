@@ -9,24 +9,16 @@ load_dotenv()
 # Refer https://docs.github.com/en/rest/reference/releases
 
 
-def get_git_key():
-    global GIT_KEY, KEY
-    if GIT_KEY == "":
-        key = getpass("key = ") if KEY == "" else KEY
-        a = sh.post(f'{sh.env("link")}/api/git_key', json={"key": sh.from_base64(key)})
-        res = a.json()
-        if a.status_code != 200:
-            print(res["detail"])
-            exit()
-        GIT_KEY = res["value"]
-    return GIT_KEY
-
-
 root = sh.env("sthAnam")
-GIT_KEY = ""
-KEY = ""
-if "KEY" in os.environ:
-    KEY = os.environ["KEY"]
+GIT_KEY = os.getenv("GIT_KEY")
+if not GIT_KEY:
+    print("create a .env file with 'GIT_KET'")
+    exit(-1)
+try:
+    GIT_KEY = sh.decrypt_text(GIT_KEY, getpass("key = "))
+except:
+    print("Wrong key!")
+    exit(-1)
 f = [
     {
         "file": root + r"\bin\Lipi Lekhika Installer.zip",
@@ -56,26 +48,26 @@ if sh.args(0) == "release":
         if "more" in d and "s" in sh.argv:
             print("Enter for Source Forge Upload of :-", d["file"].split("\\")[-1])
             sh.cmd(d["more"], file=True)
-        sh.upload_release_file(d["file"], d["repo"], d["tag"], get_git_key())
+        sh.upload_release_file(d["file"], d["repo"], d["tag"], GIT_KEY)
 elif sh.args(0) == "kAraH":
     tag = sh.argv[2]
     link = f[int(sh.argv[1]) - 1]["repo"]
     if input(f"do you want to create new release {tag} in {link}? ") != "astu":
         exit()
-    sh.make_release_tag(link, tag, get_git_key())
+    sh.make_release_tag(link, tag, GIT_KEY)
 elif sh.args(0) == "delete":
     tag = sh.argv[2]
     link = f[int(sh.argv[1]) - 1]["repo"]
     if input(f"do you want delete release {tag} from {link}? ") != "astu":
         exit()
-    sh.delete_release_tag(link, tag, get_git_key())
+    sh.delete_release_tag(link, tag, GIT_KEY)
 elif sh.args(0) == "delete_kAraH":
     tag = sh.argv[2]
     link = f[int(sh.argv[1]) - 1]["repo"]
     if input(f"do you want delete release {tag} from {link}? ") != "astu":
         exit()
-    sh.delete_release_tag(link, tag, get_git_key())
-    sh.make_release_tag(link, tag, get_git_key())
+    sh.delete_release_tag(link, tag, GIT_KEY)
+    sh.make_release_tag(link, tag, GIT_KEY)
 elif sh.args(0) == "tracker":
     if input("Are you sure to update tracking files ? ") != "astu":
         exit()
@@ -88,12 +80,12 @@ elif sh.args(0) == "tracker":
     }
     lst = [["su"] + list(sh.script_list.values()), list(sh.lang_list.values())]
     link = "lipilekhika/dist"
-    get_git_key()
+    GIT_KEY
 
     def mk(x):
         v = datt[x]
-        sh.delete_release_tag(link, x, get_git_key(), log=False)
-        sh.make_release_tag(link, x, get_git_key(), log=False, name=v[3])
+        sh.delete_release_tag(link, x, GIT_KEY, log=False)
+        sh.make_release_tag(link, x, GIT_KEY, log=False, name=v[3])
         sleep(1)
         th = []
         for y in lst[v[2]]:
@@ -103,7 +95,7 @@ elif sh.args(0) == "tracker":
                         y + v[0],
                         link,
                         x,
-                        get_git_key(),
+                        GIT_KEY,
                         fl_type=v[1],
                         fl_data=" ",
                         log=False,
