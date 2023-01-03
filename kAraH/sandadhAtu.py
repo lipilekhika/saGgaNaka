@@ -15,7 +15,7 @@ if "sign" in sh.argv or "compile" in sh.argv:
 for a in sh.argv:
     if a in "1":
         b1 = (
-            lambda y, icon: f'pyinstaller --noconfirm --onedir --window --icon "{root+app_loc}\\src\\resources\\{icon}" "{root+app_loc}\\src\\{y}.py"'
+            lambda y, icon: f'pyinstaller.exe --noconfirm --onedir --window --icon "{root+app_loc}\\src\\resources\\{icon}" "{root+app_loc}\\src\\{y}.py"'
         )
         dir1 = lambda y: f"kAraH\\build\\{y}\\{y}.exe"
         i = int(a) - 1

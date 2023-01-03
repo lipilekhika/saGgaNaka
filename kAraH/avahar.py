@@ -1,3 +1,5 @@
+# deprecated
+
 from time import sleep
 import shubhlipi as sh, os, json
 from getpass import getpass

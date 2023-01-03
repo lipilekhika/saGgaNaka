@@ -2,7 +2,7 @@ from pathlib import Path
 import os
 import subprocess as sub
 import shutil
-from .crypt import salt
+from .crypted import salt
 from .kry import home, tool
 import pyperclip as clip
 

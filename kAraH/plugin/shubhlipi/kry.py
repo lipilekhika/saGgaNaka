@@ -1,13 +1,10 @@
 import sys
 from pathlib import Path
 from threading import Thread
-from winregistry import WinRegistry
 import base64
 
 argv = sys.argv[1:]
-tool = str(Path.home()) + "\\upakaraNAni\\bin"
-
-REG = WinRegistry()
+tool = str(Path.home()) + "/.upakaraNAni/bin"
 
 def from_base64(v: str) -> str:
     """Convert Text from ``base64`` to ``utf-8``"""
@@ -17,11 +14,6 @@ def from_base64(v: str) -> str:
 def to_base64(v: str) -> str:
     """Convert Text from ``utf-8`` to ``base64``"""
     return base64.b64encode(bytes(v, "utf-8")).decode("utf-8")
-
-def env(key: str) -> str:
-    return from_base64(
-        REG.read_entry("HKCU\\SOFTWARE\\" + to_base64("lipivars"), key).value
-    )
 
 def args(i: int) -> str:
     if i > len(argv) - 1:
