@@ -2,9 +2,15 @@ import sys
 from pathlib import Path
 from threading import Thread
 import base64
+import os
+import platform
 
+IS_WINDOWS = platform.uname().system == "Windows"
 argv = sys.argv[1:]
-tool = str(Path.home()) + "/.upakaraNAni/bin"
+tool = ("C:\\" if IS_WINDOWS else "/mnt/c/") + os.path.join(
+    "Windows", ".upakaraNAni", "bin"
+)
+
 
 def from_base64(v: str) -> str:
     """Convert Text from ``base64`` to ``utf-8``"""
@@ -14,6 +20,7 @@ def from_base64(v: str) -> str:
 def to_base64(v: str) -> str:
     """Convert Text from ``utf-8`` to ``base64``"""
     return base64.b64encode(bytes(v, "utf-8")).decode("utf-8")
+
 
 def args(i: int) -> str:
     if i > len(argv) - 1:

@@ -151,5 +151,5 @@ def clip_paste():
 
 
 def extract(fl: str, dest: str, file=False):
-    cmd(f'"{tool}\\7zip\\7za.exe" x "{fl}" -o"{dest}" -y',
+    cmd(f'"{tool}/7zip/7za.exe" x "{fl}" -o"{dest}" -y',
         display=False, file=file)

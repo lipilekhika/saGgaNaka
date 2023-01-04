@@ -58,12 +58,12 @@ if __name__ == "__main__":
         cm = [f"cd {root}", f"virtualenv py_env -p {py_path}"]
         if os.path.isdir(root + r"\py_env"):
             sh.delete_folder(root + r"\py_env")
-        sh.cmd("\n".join(cm), file=True)
+        sh.cmd("\n".join(cm), False)
         exit()
     for x in sh.argv:
         if x in pkg:
             for c in pkg[x]:
-                sh.cmd(f"pip install {c}", file=True)
+                sh.cmd(f"pip install {c}", False)
         if x in cmd:
             for c in cmd[x]:
-                sh.cmd(c, file=True)
+                sh.cmd(c, False)
