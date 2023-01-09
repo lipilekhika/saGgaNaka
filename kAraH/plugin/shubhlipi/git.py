@@ -17,7 +17,7 @@ def upload_release_file(
 ):
     if log:
         print("Current File: ", file)
-    file_name = file.split("\\")[-1].replace(" ", ".")
+    file_name = file.split("\\").split("/")[-1].replace(" ", ".")
     rq = get(
         "https://api.github.com/repos/" + repo + "/releases",
         headers={
@@ -70,6 +70,7 @@ def upload_release_file(
         if log:
             print("Upload Response:", rq.status_code)
         rq.close()
+
     if dlt and file_id != "":
         del_file(file_id)
     if upld and tag_id != "":
