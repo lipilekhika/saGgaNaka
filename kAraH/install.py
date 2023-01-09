@@ -4,7 +4,7 @@ try:
     import shubhlipi as sh
 except:
     cm = [
-        r"{0}\python.exe -m pip install --upgrade pip".format(
+        r"{0}\python -m pip install --upgrade pip".format(
             os.path.dirname(sys.executable)
         ),
         "pip install shubhlipi",
@@ -18,7 +18,9 @@ pkg = {
     "sarve": [
         "black",  # Python Beutifier
         "pyaml",  # .yaml file management
+        "wheel",
         "deta",
+        "toml",
         "flask",
         "fastapi",
         "twine",  # upload pip package

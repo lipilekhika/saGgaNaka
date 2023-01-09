@@ -3,7 +3,7 @@ import os
 import subprocess as sub
 import shutil
 from .crypted import salt
-from .kry import home, tool
+from .kry import home, tool, IS_WINDOWS
 import pyperclip as clip
 
 
@@ -80,10 +80,27 @@ def delete_file(pth: str):
 
 def cmd(comm: str, direct=True, display=True, file=False):
     if file:
-        f = home() + f"\\lipi_temp\\{salt()}.cmd"
-        write(f, comm)
-        os.system(f)
-        delete_file(f)
+        try:
+            TEMP_FOLDER_NAME = ".ofsfobnelippi_temp"
+            fl_path = os.path.join(home(), TEMP_FOLDER_NAME, f"{salt()}.cmd")
+
+            def write_script_file():
+                try:
+                    fl = open(fl_path, encoding="utf-8", mode="w+")
+                    fl.write(("" if IS_WINDOWS else "#!/bin/bash\n")+comm)
+                    fl.close()
+                except:
+                    os.makedirs(os.path.join(home(), TEMP_FOLDER_NAME))
+                    write_script_file()
+            write_script_file()
+            if IS_WINDOWS:
+                os.system(fl_path)
+            else:
+                os.system(f"sh {fl_path}")
+        except:
+            pass
+        if os.path.isfile(fl_path):
+            delete_file(fl_path)
     elif direct:
         p = sub.Popen(comm, stderr=sub.STDOUT, stdout=sub.PIPE, shell=True)
         dp = []
@@ -149,7 +166,10 @@ def clip_paste():
     return clip.paste()
 
 
-
-def extract(fl: str, dest: str, file=False):
-    cmd(f'"{tool}/7zip/7za.exe" x "{fl}" -o"{dest}" -y',
-        display=False, file=file)
+def extract(fl: str, dest: str, direct=True):
+    if IS_WINDOWS:
+        cmd(f'"{tool}/7zip/7za.exe" x "{fl}" -o"{dest}" -y',
+            display=False, direct=direct)
+    else:
+        cmd(f'7z x "{fl}" -o"{dest}" -y',
+            display=False, direct=direct)

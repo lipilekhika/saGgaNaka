@@ -5,8 +5,15 @@ import base64
 import os
 import platform
 
-IS_WINDOWS = platform.uname().system == "Windows"
 argv = sys.argv[1:]
+
+
+def get_cuurent_platform() -> str:
+    return platform.uname().system
+
+
+IS_WINDOWS = get_cuurent_platform() == "Windows"
+
 tool = ("C:\\" if IS_WINDOWS else "/mnt/c/") + os.path.join(
     "Windows", ".upakaraNAni", "bin"
 )
