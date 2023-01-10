@@ -112,7 +112,7 @@ def cmd(comm: str, direct=True, display=True, file=False):
             if display:
                 print(dp[-1])
         p.wait()
-        return [p.returncode, "".join(dp)]
+        return [p.returncode, "\n".join(dp)]
     else:
         os.system(comm)
 
