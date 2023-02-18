@@ -6,7 +6,7 @@ import re, os
 
 def parivartak(val: str, src: str, to: str, html=False) -> str:
     req = post(
-        f"https://lipilekhika.deta.dev",
+        "https://lipi-1-e1902026.deta.app",
         json={
             "text": val,
             "from": src,
