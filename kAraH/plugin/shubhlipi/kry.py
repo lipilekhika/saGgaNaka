@@ -13,6 +13,7 @@ def get_cuurent_platform() -> str:
 
 
 IS_WINDOWS = get_cuurent_platform() == "Windows"
+IS_LINUX = get_cuurent_platform() == "Linux"
 
 tool = ("C:\\" if IS_WINDOWS else "/mnt/c/") + os.path.join(
     "Windows", ".upakaraNAni", "bin"
