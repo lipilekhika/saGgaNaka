@@ -17,7 +17,12 @@ def upload_release_file(
 ):
     if log:
         print("Current File: ", file)
-    file_name = file.split("\\").split("/")[-1].replace(" ", ".")
+    if "/" in file:
+        file_name = file.split("/")[-1].replace(" ", ".")
+    elif "\\" in file:
+        file_name = file.split("\\")[-1].replace(" ", ".")
+    else:
+        file_name = file
     rq = get(
         "https://api.github.com/repos/" + repo + "/releases",
         headers={
