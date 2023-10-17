@@ -1,4 +1,3 @@
-import base64
 import hashlib
 import uuid
 from .kry import get_type, from_base64, to_base64
@@ -20,10 +19,12 @@ def salt() -> str:
 
 
 def hash_256(val) -> str:
+    """`SHA3-256`"""
     return hashlib.sha3_256(bin_str(val)).hexdigest()
 
 
 def hash_512(val) -> str:
+    """`SHA3-512`"""
     return hashlib.sha3_512(bin_str(val)).hexdigest()
 
 
@@ -44,3 +45,15 @@ def decrypt(val, key: str) -> bytes:
 
 def decrypt_text(val, key: str):
     return decrypt(val, key).decode("utf-8")
+
+
+# SHA2
+
+def hash_2_256(val) -> str:
+    """`SHA-156`"""
+    return hashlib.sha256(bin_str(val)).hexdigest()
+
+
+def hash_2_512(val) -> str:
+    return hashlib.sha512(bin_str(val)).hexdigest()
+
