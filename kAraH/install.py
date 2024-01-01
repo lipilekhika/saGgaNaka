@@ -42,6 +42,10 @@ pkg = {
         "python-multipart",  # Form Parser in FastAPI
         "python-jose[cryptography]",  # JWT Handler
         "datamodel_code_generator",  # Type Server
+        # CLI tools
+        "typer[all]",
+        "rich",
+        "rich-cli",
     ],
     "exe": ["https://github.com/pyinstaller/pyinstaller/tarball/develop"],
 }
