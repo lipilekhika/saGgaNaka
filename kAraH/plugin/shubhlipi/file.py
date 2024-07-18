@@ -1,10 +1,12 @@
 from pathlib import Path
 import os
+import typing
 import subprocess as sub
 import shutil
 from .crypted import salt
 from .kry import home, tool, IS_WINDOWS
 import pyperclip as clip
+from rich import print
 
 
 def parent(loc: str) -> str:
@@ -87,11 +89,12 @@ def cmd(comm: str, direct=True, display=True, file=False):
             def write_script_file():
                 try:
                     fl = open(fl_path, encoding="utf-8", mode="w+")
-                    fl.write(("" if IS_WINDOWS else "#!/bin/bash\n")+comm)
+                    fl.write(("" if IS_WINDOWS else "#!/bin/bash\n") + comm)
                     fl.close()
                 except:
                     os.makedirs(os.path.join(home(), TEMP_FOLDER_NAME))
                     write_script_file()
+
             write_script_file()
             if IS_WINDOWS:
                 os.system(fl_path)
@@ -168,8 +171,49 @@ def clip_paste():
 
 def extract(fl: str, dest: str, direct=True):
     if IS_WINDOWS:
-        cmd(f'"{tool}/7zip/7za.exe" x "{fl}" -o"{dest}" -y',
-            display=False, direct=direct)
+        cmd(
+            f'"{tool}/7zip/7za.exe" x "{fl}" -o"{dest}" -y',
+            display=False,
+            direct=direct,
+        )
     else:
-        cmd(f'7z x "{fl}" -o"{dest}" -y',
-            display=False, direct=direct)
+        cmd(f'7z x "{fl}" -o"{dest}" -y', display=False, direct=direct)
+
+
+def prefix_zeros(num: int, zeros: int):
+    # return "0" * (zeros - len(str(num))) + str(num)
+    return str(num).zfill(zeros)
+
+
+def rename_files(
+    folders: list[str],
+    rename_func_callback: typing.Callable[[str], str],
+    allowed_exts=("mp4", "mkv"),
+):
+    PATHS: dict[str, str] = {}
+    for folder in folders:
+        for root, dirs, files in os.walk(folder):
+            for file in files:
+                if file.split(".")[-1] not in allowed_exts:
+                    continue
+                old_path = os.path.join(root, file)
+                new_file_name = rename_func_callback(file)
+                new_path = os.path.join(root, new_file_name)
+                PATHS[old_path] = new_path
+
+    if len(PATHS) == 0:
+        print("[red bold]No files found to rename[/]")
+        exit()
+
+    for old, new in PATHS.items():
+        print(f"[white bold]{new}\t->\t[/][blue]{old}[/]")
+
+    print("[yellow bold]Are you sure to rename ?[/] ", end="")
+    prompt = input()
+
+    if prompt not in ["yes", "y"]:
+        print("Exiting...")
+        exit()
+    print("Renaming files...")
+    for old, new in PATHS.items():
+        os.rename(old, new)
